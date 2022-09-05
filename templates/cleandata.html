@@ -1,0 +1,178 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <link rel="stylesheet" href="{% static 'assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css' %}">
+    <link href="{% static 'assets/css/image-upload.css' %}" rel="stylesheet"/>
+
+
+    <section class="content">
+        <div class="block-header">
+        </div>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2> Organization List </h2>
+                        </div>
+                        <div class="body " style="overflow-x: scroll">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Org Name</th>
+                                    <th>Org Acronym</th>
+                                    <th>Org Type</th>
+                                    <th>Org Target Group</th>
+                                    {#                                    <th>Org Target Demographic</th>#}
+                                    {#                                    <th>Org Email</th>#}
+                                    {#                                    <th>Org Phone</th>#}
+                                    <th style="min-width: 120px" class="text-center">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for d in data %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ d.org_name }}</td>
+                                        <td>{{ d.org_acronym }}</td>
+                                        <td>{{ d.org_type.value }}</td>
+                                        <td>{{ d.org_targetgroup }}</td>
+                                        {#                                    <td>{% for t in  d.org_targetdemographic.all %}{{ t.value }}<br>{% endfor %}</td>#}
+                                        {#                                    <td>{{ d.org_email }}</td>#}
+                                        {#                                    <td>{{ d.org_phone }}</td>#}
+                                        <td class="text-center">
+
+                                            <button type="button" class="btn-circle waves-effect waves-circle bg-blue" onclick="location.href='/org-details/{{ d.id }}/'" title="Edit organization details">
+                                                <i class="material-icons">edit</i></button>
+                                            <button type="button" class="btn-circle waves-effect waves-circle bg-cyan" onclick="update_logo('{{ d.id }}','{{ d.org_acronym }}');" title="Upload logo">
+                                                <i class="material-icons">image</i></button>
+                                            <button type="button" class="btn-circle waves-effect waves-circle bg-pink" onclick="delete_org('{{ d.id }}');" title="Delete organization">
+                                                <i class="material-icons">delete</i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="{% static 'assets/bundles/datatablescripts.bundle.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+
+    <script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script><!-- Custom Js -->
+    <script src="{% static 'assets/js/pages/tables/jquery-datatable.js' %}"></script>
+    <script src="{% static 'assets/js/image-upload.js' %}"></script>
+
+    <script>
+        function update_logo(org_id, org_acronym) {
+            $(function () {
+                input_HTML = `<form id="org_logo_form" action="/update-org-logo/${org_id}/" enctype="multipart/form-data" method="post">{% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="file-upload">
+                                            <button class="file-upload-btn" type="button"
+                                                    onclick="$('.file-upload-input').trigger( 'click' )">Add Image
+                                            </button>
+
+                                            <div class="image-upload-wrap" disabled="">
+                                                <input class="file-upload-input" type='file' required onchange="readURL(this);" name="org_logo"
+                                                       accept="image/*"/>
+                                                <div class="drag-text">
+                                                    <h3>Select Add Image to upload logo</h3>
+                                                </div>
+                                            </div>
+                                            <div class="file-upload-content">
+                                                <img class="file-upload-image" src="#" alt="your image"/>
+                                                <div class="image-title-wrap">
+                                                    <button type="button" onclick="removeUpload()" class="remove-image">
+                                                        Remove <span class="image-title">Uploaded Image</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>`
+                Swal.fire({
+                    title: `Update ${org_acronym} Logo`,
+                    html: input_HTML,
+                    iconHtml: '<i class="material-icons" style="color: #3fc3ee; ">add_to_photos</i>',
+                    confirmButtonText: 'Save',
+                    focusConfirm: false,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    preConfirm: () => {
+                        {#const org_logo_form = Swal.getPopup().querySelector('#org_logo').value#}
+                        return {
+                            org_id: org_id,
+                        }
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $("#org_logo_form").submit(); // Submit the form
+                        $('#org_logo_form').trigger("reset");
+                    } else {
+                        // handle cancel
+                        $('#org_logo_form').trigger("reset");
+                    }
+                })
+            })
+        }
+
+
+        function delete_org(org_id) {
+            $(function () {
+                    console.log("click");
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel!',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            //do your own request an handle the results
+                            window.location.href = `/delete-org/${org_id}/`
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            // {#swalWithBootstrapButtons.fire(#}
+                            // {#    'Cancelled',#}
+                            // {#    item + '(' + lckp_id.toString() + ') is safe :)',#}
+                            // {#    'error'#}
+                            // {#)#}
+                        }
+                    })
+
+
+                }
+            )
+            ;
+        }
+
+
+    </script>
+{% endblock %}

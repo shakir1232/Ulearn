@@ -1,0 +1,62 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    {% load lookup %}
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css' %}">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2> Raw Data </h2>
+
+                        </div>
+                        <div class="body " style="overflow-x: scroll">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable" >
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    {% for c in columns %}
+                                        <th>{{ c.name }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for d in data %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        {% for c in columns %}
+                                            <td>{{ d|lookup:c.name }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="{% static 'assets/bundles/datatablescripts.bundle.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+
+    <script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script><!-- Custom Js -->
+    <script src="{% static 'assets/js/pages/tables/jquery-datatable.js' %}"></script>
+
+
+{% endblock %}

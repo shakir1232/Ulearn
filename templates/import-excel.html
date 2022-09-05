@@ -1,0 +1,95 @@
+﻿
+
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+<style>
+
+</style>
+<link rel="stylesheet" type="text/css" href="{% static 'old_version/lib/bootstrap-fileupload/bootstrap-fileupload.css' %}"/>
+    <br><br><br><br>
+<div class="row">
+    <div class="col-md-12">
+        <form action="/import-data/" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <div class="form-group last">
+                {#                                            <label class="control-label col-md-3">File Upload</label>#}
+                <div class="col-md-12 text-center">
+                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                        <div class="fileupload-new thumbnail"
+                             style="max-width: 100%; height: 30px; min-width: 220px">
+                            {#                                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+file"#}
+                            {#                                                     alt=""/>#}
+                            <span style="text-align: center; padding-top: 20px">No file selected!</span>
+                        </div>
+                        <div class="fileupload-preview fileupload-exists thumbnail"
+                             style="max-width: 100%; max-height: 150px; line-height: 20px;min-width: 150px"></div>
+                        <div>
+                <span class="btn btn-theme02 btn-file" style="min-width: 220px">
+                  <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select File</span>
+                <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                <input type="file" name="excel_file" required class="default"/>
+                </span>
+                            <a href=""
+                               class="btn btn-theme04 fileupload-exists"
+                               data-dismiss="fileupload"><i class="fa fa-trash-o"></i>
+                                Remove</a>
+                        </div>
+                    </div>
+                    <span class="label label-info">NOTE!</span>
+                    <span>Supported file format: Excel only</span><br><br>
+                    <button  class="btn btn-theme btn-lg"
+                             style="min-width: 220px" type="submit" value="Upload">Upload</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'old_version/lib/bootstrap-fileupload/bootstrap-fileupload.js' %}"></script>
+    <!-- Dropzone Css -->
+{#    <link rel="stylesheet" href="{% static 'assets/plugins/dropzone/dropzone.css' %}">#}
+{#<section class="content">#}
+{##}
+{#    <div class="container-fluid">#}
+{#        <!-- File Upload | Drag & Drop OR With Click & Choose -->#}
+{#        <div class="row clearfix">#}
+{#            <div class="col-lg-12 col-md-12 col-sm-12">#}
+{#                <div class="card">#}
+{#                    <div class="header">#}
+{#                        <h2> FILE UPLOAD - DRAG & DROP OR WITH CLICK & CHOOSE </h2>#}
+{#                        <ul class="header-dropdown m-r--5">#}
+{#                            <li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle"#}
+{#                                                    data-toggle="dropdown" role="button" aria-haspopup="true"#}
+{#                                                    aria-expanded="false"> <i class="zmdi zmdi-more-vert"></i> </a>#}
+{#                                <ul class="dropdown-menu pull-right">#}
+{#                                    <li><a href="javascript:void(0);">Action</a></li>#}
+{#                                    <li><a href="javascript:void(0);">Another action</a></li>#}
+{#                                    <li><a href="javascript:void(0);">Something else here</a></li>#}
+{#                                </ul>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                    <div class="body">#}
+{#                        <form action="https://wrraptheme.com/" id="frmFileUpload" class="dropzone" method="post"#}
+{#                              enctype="multipart/form-data">#}
+{#                            <div class="dz-message">#}
+{#                                <div class="drag-icon-cph"><i class="material-icons">touch_app</i></div>#}
+{#                                <h3>Drop excel file here or click to upload.</h3>#}
+{#                                <!--                                <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em> -->#}
+{#                            </div>#}
+{#                            <div class="fallback">#}
+{#                                <input name="file" type="file" />#}
+{#                            </div>#}
+{#                            <button type="button" class="btn btn-raised btn-primary waves-effect" data-toggle="modal"#}
+{#                                    data-target="#createModal">Upload#}
+{#                            </button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <!-- #END# File Upload | Drag & Drop OR With Click & Choose -->#}
+{#    </div>#}
+{#</section>#}
+{#<script src="{% static 'assets/plugins/dropzone/dropzone.js' %}"></script> <!-- Dropzone Plugin Js -->#}
+{% endblock %}

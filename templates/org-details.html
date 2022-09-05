@@ -1,0 +1,536 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+
+
+    {#    <link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>#}
+    <link href="{% static 'assets/plugins/multi-select/css/multi-select.css' %}" rel="stylesheet"/>
+    <!-- Bootstrap Select Css -->
+    {#    <link href="{% static 'assets/plugins/bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet"/>#}
+    <link href="{% static 'assets/css/image-upload.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/plugins/jquery-steps/jquery.steps.css' %}" rel="stylesheet"/>
+    <!-- Multi Select Css -->
+
+
+
+    <style>
+        #wizard_with_validation .content {
+            min-height: 65vh !important;
+            max-height: 1200px !important;
+            overflow: auto !important;
+        }
+
+        .wizard .content .body label {
+            margin-left: 10px !important;
+        }
+
+        .dropdown-toggle {
+            display: none;
+        }
+
+        select {
+            padding: 10px !important;
+        }
+
+        /*        body {*/
+        /*  font-family: sans-serif;*/
+        /*  background-color: #eeeeee;*/
+        /*}*/
+
+    </style>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Advanced Form Example With Validation -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>ORGANIZATION DETAILS</h2>
+                        </div>
+                        <div class="body">
+                            <form id="wizard_with_validation" method="POST" enctype="multipart/form-data" action="/org-details/{{ org.id }}/">{% csrf_token %}
+                                <h3>Organization Details</h3>
+                                <fieldset>
+                                    <label class="form-label">Organization Full Name*</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" placeholder="Organization Name" class="form-control" name="org_name" value="{{ org.org_name }}" required>
+                                        </div>
+                                    </div>
+
+                                    <label class="form-label">Organization Acronym*</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="org_acronym" value="{{ org.org_acronym }}" required>
+                                        </div>
+                                    </div>
+
+                                    <label class="form-label">Founding Year</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="founding_year" value="{{ org.founding_year }}">
+                                        </div>
+                                    </div>
+                                    <label class="form-label">Target Community</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select class="form-control" name="org_target_community">
+                                                <option value="">---- SELECT TARGET COMMUNITY ----</option>
+                                                {% for o in target_group %}
+                                                    {% if org.org_targetgroup == target_group %}
+                                                        <option value="{{ o }}" selected>{{ o }}</option>
+                                                    {% else %}
+                                                        <option value="{{ o }}">{{ o }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="body">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-6">
+                                                    <label class="form-label">Organization Type</label>
+                                                    <select class="form-control" name="org_type" required>
+                                                        {% for o in org_type %}
+                                                            {% if org.org_type.id == o.id %}
+                                                                <option value="{{ o.id }}" selected>{{ o.value }}</option>
+                                                            {% else %}
+                                                                <option value="{{ o.id }}">{{ o.value }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="form-label">Organization Legal Type</label>
+                                                    <select class="form-control" name="org_legaltype">
+                                                        <option value=""> -- Select Org Legal Type --</option>
+                                                        {% for o in org_legal_type %}
+                                                            {% if org.org_legaltype == o %}
+                                                                <option value="{{ o }}" selected>{{ o }}</option>
+                                                            {% else %}
+                                                                <option value="{{ o }}">{{ o }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="min-height: 150px !important;">
+                                        <div class="body">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-12 text-center">
+
+                                                    {#                                                    <label class="form-label">Target Demographics</label>#}
+                                                    <select class="input" multiple style="min-height: 150px; width: auto !important; margin: auto; text-align: center; border: none" name="org_target_demographic">
+                                                        {#                                                        <option value="" disabled> -- Select Target Demographics --#}
+                                                        {#                                                        </option>#}
+                                                        <optgroup label="Target Demographics">
+                                                            {% for o in target_demo %}
+                                                                {% if o in org.org_targetdemographic.all %}
+                                                                    <option value="{{ o.id }}" selected>{{ o.value }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ o.id }}">{{ o.value }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </fieldset>
+                                <h3>Contact Information</h3>
+                                <fieldset>
+                                    <label class="form-label">Organization Email</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_email %}
+                                                <input type="email" class="form-control" value="{{ org.org_email }}" name="org_email">
+                                            {% else %}
+                                                <input type="email" class="form-control" name="org_email">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <label class="form-label">Organization Phone</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_phone %}
+                                                <input type="text" name="org_phone" value="{{ org.org_phone }}" class="form-control">
+                                            {% else %}
+                                                <input type="text" name="org_phone" class="form-control">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <label class="form-label">Organization Website</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_website %}
+                                                <input type="text" name="org_website" value="{{ org.org_website }}" class="form-control">
+                                            {% else %}
+                                                <input type="text" name="org_website" class="form-control">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <label class="form-label">Organization Facebook</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_facebook %}
+                                                <input type="text" name="org_facebook" value="{{ org.org_facebook }}" class="form-control">
+                                            {% else %}
+                                                <input type="text" name="org_facebook" class="form-control">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <label class="form-label">Organization Twitter</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_twitter %}
+                                                <input type="text" name="org_twitter" value="{{ org.org_twitter }}" class="form-control">
+                                            {% else %}
+                                                <input type="text" name="org_twitter" class="form-control">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <label class="form-label">Organization Primary Contact Name</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_primarycontact %}
+                                                <input type="text" name="org_primary_contact" value="{{ org.org_primarycontact }}" class="form-control">
+                                            {% else %}
+                                                <input type="text" name="org_primary_contact" class="form-control">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <label class="form-label">Organization Primary Contact Email</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.contact_email %}
+                                                <input type="email" name="contact_email" value="{{ org.contact_email }}" class="form-control">
+                                            {% else %}
+                                                <input type="email" name="contact_email" class="form-control">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <h3>Settlement Information</h3>
+                                <fieldset>
+
+                                    <label class="form-label">Primary Technical Area Focus*</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            {% if org.org_primary_technical_area_focus %}
+                                                <textarea name="org_primary_technical_area_focus" cols="30" rows="3" class="form-control no-resize" required>{{ org.org_primary_technical_area_focus }}</textarea>
+                                            {% else %}
+                                                <textarea name="org_primary_technical_area_focus" cols="30" rows="3" class="form-control no-resize" required></textarea>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="settlement_section">
+                                        {% for os in  org_sttlmnt %}
+                                            <div class="card settlement_card">
+                                                <div class="card-header text-center">
+                                                    <h5>Settlement {{ forloop.counter }}</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <div class="body">
+                                                            <div class="row clearfix">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Settlement</label>
+                                                                    <div class="form-line">
+                                                                        <select class="form-control settlement_select" name="settlement_{{ forloop.counter }}">
+                                                                            <option value="" selected>-- SELECT
+                                                                                SETTLEMENT --
+                                                                            </option>
+                                                                            {% for o in settlements %}
+                                                                                {% if os.settlement.id == o.id %}
+                                                                                    <option value="{{ o.id }}" selected>{{ o.value }}</option>
+                                                                                {% else %}
+                                                                                    <option value="{{ o.id }}">{{ o.value }}</option>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Number of staff</label>
+                                                                    <div class="form-line">
+                                                                        {% if os.num_of_staffs %}
+                                                                            <input type="number" name="number_of_staff_{{ forloop.counter }}" value="{{ os.num_of_staffs }}" class="form-control">
+                                                                        {% else %}
+                                                                            <input type="number" name="number_of_staff_{{ forloop.counter }}" class="form-control">
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="row clearfix">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Settlement operational
+                                                                    office(s)</label>
+                                                                <div class="form-line">
+                                                                    {% if os.operation_offices %}
+                                                                        <textarea name="operation_offices_{{ forloop.counter }}" cols="30" rows="3" class="form-control no-resize">{{ os.operation_offices }}</textarea>
+                                                                    {% else %}
+                                                                        <textarea name="operation_offices_{{ forloop.counter }}" cols="30" rows="3" class="form-control no-resize"></textarea>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Settlement zones and
+                                                                    blocks</label>
+                                                                <div class="form-line">
+                                                                    {% if os.zones %}
+                                                                        <textarea name="zone_{{ forloop.counter }}" cols="30" rows="3" class="form-control no-resize">{{ os.zones }}</textarea>
+                                                                    {% else %}
+                                                                        <textarea name="zone_{{ forloop.counter }}" cols="30" rows="3" class="form-control no-resize"></textarea>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group text-center">
+                                                        <div class="form-line">
+                                                            <div class="body">
+                                                                <select id="optgroup" class="" multiple="multiple" name="thematic_area_{{ forloop.counter }}" style="border: none; min-height: 200px">
+                                                                    {#                                                        class="ms"#}
+                                                                    <optgroup label="Primary Technical Area">
+                                                                        {% for s in thematic_area %}
+                                                                            {% if s in os.primary_thematic_area.all %}
+                                                                                <option value="{{ s.id }}" selected>{{ s.value }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ s.id }}">{{ s.value }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </optgroup>
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="text-center">
+                                        <a id="add_sttlmnt" style="color: white" onclick="add_new_settlement();" class="btn btn-primary text-center">Add
+                                            More Settlement Details
+                                        </a>
+                                    </div>
+
+                                    <br><br>
+                                </fieldset>
+                                <h3>Upload Logo - Finish</h3>
+                                <fieldset>
+                                    {% if org.logo_img %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <img src="{{ org.logo_img.url }}" style="width: 80%; height: auto">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="file-upload">
+                                                        <button class="file-upload-btn" type="button"
+                                                                onclick="$('.file-upload-input').trigger( 'click' )">
+                                                            Change Image
+                                                        </button>
+
+                                                        <div class="image-upload-wrap" disabled="">
+                                                            <input class="file-upload-input" type='file' onchange="readURL(this);" name="org_logo"
+                                                                   accept="image/*"/>
+                                                            <div class="drag-text">
+                                                                <h3>Drag and drop a file or select change Image</h3>
+                                                            </div>
+                                                        </div>
+                                                        <div class="file-upload-content">
+                                                            <img class="file-upload-image" src="#" alt="your image"/>
+                                                            <div class="image-title-wrap">
+                                                                <button type="button" onclick="removeUpload()" class="remove-image">
+                                                                    Remove
+                                                                    <span class="image-title">Uploaded Image</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <div class="file-upload">
+                                                <button class="file-upload-btn" type="button"
+                                                        onclick="$('.file-upload-input').trigger( 'click' )">Add Image
+                                                </button>
+
+                                                <div class="image-upload-wrap" disabled="">
+                                                    <input class="file-upload-input" type='file' onchange="readURL(this);" name="org_logo"
+                                                           accept="image/*"/>
+                                                    <div class="drag-text">
+                                                        <h3>Drag and drop a file or select add Image</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="file-upload-content">
+                                                    <img class="file-upload-image" src="#" alt="your image"/>
+                                                    <div class="image-title-wrap">
+                                                        <button type="button" onclick="removeUpload()" class="remove-image">
+                                                            Remove <span class="image-title">Uploaded Image</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
+                                    <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Advanced Form Example With Validation -->
+        </div>
+    </section>
+
+    <script src="{% static 'assets/plugins/jquery-validation/jquery.validate.js' %}"></script>
+    <!-- Jquery Validation Plugin Css -->
+    <script src="{% static 'assets/plugins/jquery-steps/jquery.steps.js' %}"></script> <!-- JQuery Steps Plugin Js -->
+
+    <script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script><!-- Custom Js -->
+    <script src="{% static 'assets/js/pages/forms/form-wizard.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js' %}"></script>
+    <!-- Bootstrap Colorpicker Js -->
+    <script src="{% static 'assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js' %}"></script>
+    <!-- Input Mask Plugin Js -->
+
+
+    <script src="{% static 'assets/plugins/autosize/autosize.js' %}"></script>
+    <script src="{% static 'assets/plugins/momentjs/moment.js' %}"></script>
+    {#    <script src="{% static 'assets/js/pages/forms/basic-form-elements.js' %}"></script>#}
+    {#        <script src="{% static 'assets/js/pages/forms/advanced-form-elements.js' %}"></script>#}
+    <script src="{% static 'assets/js/image-upload.js' %}"></script>
+    <script src="{% static 'assets/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
+    <!-- Multi Select Plugin Js -->
+
+    <script>
+
+        //Multi-select
+        {#$('#optgroup').multiSelect({selectableOptgroup: true});#}
+        {#$('#optgroup2').multiSelect({selectableOptgroup: true});#}
+        {#$('#optgroup3').multiSelect({selectableOptgroup: true});#}
+    </script>
+
+    <style>
+        ul {
+            list-style: none !important;
+        }
+
+        .wizard .content .body ul {
+            list-style: none !important;
+        }
+
+        .wizard .content .body ul li {
+            display: block;
+        }
+
+
+    </style>
+    <script>
+        function remove_selected_settlement(select_id) {
+            var selected_settlements = []
+            $(".settlement_select").each(function () {
+                selected_settlements.push($(this).val())
+                var val = $(this).val()
+                $(`#${select_id} option[value="${val}"]`).remove();
+            })
+
+        }
+
+        function add_new_settlement() {
+            var s_cnt = document.getElementsByClassName("settlement_card").length + 1;
+            var s_count = s_cnt.toString()
+            var new_card = `<div class="card settlement_card">
+                                            <div class="card-header text-center">
+                                                <h5>Settlement ${s_count}</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group form-float">
+                                                    <div class="body">
+                                                        <div class="row clearfix">
+                                                            <div class="col-md-6">
+                                                                <div class="form-line">
+                                                                    <select class="form-control show-tick settlement_select" id="settlement_select_${s_count}" name="settlement_${s_count}">
+                                                                        <option value="" selected>-- SELECT SETTLEMENT
+                                                                            --
+                                                                        </option>
+                                                                        {% for o in settlements %}
+                                                                            <option value="{{ o.id }}">{{ o.value }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-line">
+                                                                    <input type="number" name="number_of_staff_${s_count}" class="form-control" placeholder = "Number of staff">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="row clearfix">
+                                                        <div class="col-md-6">
+                                                            <div class="form-line">
+                                                                <textarea name="operation_offices_${s_count}" cols="30" rows="3" class="form-control no-resize" placeholder = "Settlement operational office(s)"></textarea>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-line">
+                                                                <textarea name="zone_${s_count}" cols="30" rows="3" class="form-control no-resize" placeholder = "Settlement zones and blocks"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-float text-center">
+                                                    <div class="form-line">
+                                                        <div class="body">
+                                                            <select id="optgroup" class="" multiple="multiple" name="thematic_area_${s_count}" style="border: none; min-height: 200px">
+                                                                {#                                                        class="ms"#}
+                                                                <optgroup label="Primary Technical Area">
+                                                                    {% for s in thematic_area %}
+                                                                        <option value="{{ s.id }}">{{ s.value }}</option>
+                                                                    {% endfor %}
+                                                                </optgroup>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`
+            $('.settlement_section').append(new_card);
+            remove_selected_settlement(`settlement_select_${s_count}`);
+        }
+    </script>
+{% endblock %}

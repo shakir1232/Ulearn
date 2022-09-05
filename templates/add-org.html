@@ -1,0 +1,434 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+
+
+    {#    <link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>#}
+    <link href="{% static 'assets/plugins/multi-select/css/multi-select.css' %}" rel="stylesheet"/>
+    <!-- Bootstrap Select Css -->
+    {#    <link href="{% static 'assets/plugins/bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet"/>#}
+    <link href="{% static 'assets/css/image-upload.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/plugins/jquery-steps/jquery.steps.css' %}" rel="stylesheet"/>
+    <!-- Multi Select Css -->
+
+
+
+    <style>
+        #wizard_with_validation .content {
+            min-height: 65vh !important;
+            max-height: 1200px !important;
+            overflow: auto !important;
+        }
+
+        .wizard .content .body label {
+            margin-left: 10px !important;
+        }
+
+        .dropdown-toggle {
+            display: none;
+        }
+
+        select {
+            padding: 10px !important;
+        }
+
+        /*        body {*/
+        /*  font-family: sans-serif;*/
+        /*  background-color: #eeeeee;*/
+        /*}*/
+
+    </style>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Advanced Form Example With Validation -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>ORGANIZATION DETAILS</h2>
+                        </div>
+                        <div class="body">
+                            <form id="wizard_with_validation" method="POST" enctype="multipart/form-data" action="/add-org/">{% csrf_token %}
+                                <h3>Organization Details</h3>
+                                <fieldset>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="org_name" required>
+                                            <label class="form-label">Organization Full Name*</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="org_acronym" required>
+                                            <label class="form-label">Organization Acronym*</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="founding_year">
+                                            <label class="form-label">Founding Year</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <select class="form-control" name="org_target_community">
+                                                <option value="" selected>---- SELECT TARGET COMMUNITY ----</option>
+                                                {% for o in target_group %}
+                                                    {% if org.org_targetgroup == target_group %}
+                                                        <option value="{{ o }}" selected>{{ o }}</option>
+                                                    {% else %}
+                                                        <option value="{{ o }}">{{ o }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group form-float">
+                                        <div class="body">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" name="org_type" required>
+                                                        <option value="" selected> -- Select Org Type --</option>
+                                                        {% for o in org_type %}
+                                                            <option value="{{ o.id }}">{{ o.value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" name="org_legaltype">
+                                                        <option value="" selected> -- Select Org Legal Type --</option>
+                                                        {% for o in org_legal_type %}
+                                                            <option value="{{ o }}">{{ o }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float" style="min-height: 150px !important;">
+                                        <div class="body">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-12 text-center">
+                                                    <select class="input" multiple style="min-height: 150px; width: auto !important; margin: auto; text-align: center; border: none" name="org_target_demographic">
+                                                        <option value="" disabled> -- Select Target Demographics --
+                                                        </option>
+                                                        {% for o in target_demo %}
+                                                            <option value="{{ o.id }}">{{ o.value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+
+                                    <!--                                <div class="form-group form-float">-->
+                                    <!--                                    <div class="form-line">-->
+                                    <!--                                        <input type="password" class="form-control" name="password" id="password" required>-->
+                                    <!--                                        <label class="form-label">Password*</label>-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+                                    <!--                                <div class="form-group form-float">-->
+                                    <!--                                    <div class="form-line">-->
+                                    <!--                                        <input type="password" class="form-control" name="confirm" required>-->
+                                    <!--                                        <label class="form-label">Confirm Password*</label>-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+
+                                </fieldset>
+                                <h3>Contact Information</h3>
+                                <fieldset>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="email" class="form-control" name="org_email">
+                                            <label class="form-label">Organization Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="org_phone" class="form-control">
+                                            <label class="form-label">Organization Phone</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="org_website" class="form-control">
+                                            <label class="form-label">Organization Website</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="org_facebook" class="form-control">
+                                            <label class="form-label">Organization Facebook</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="org_twitter" class="form-control">
+                                            <label class="form-label">Organization Twitter</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" name="org_primary_contact" class="form-control">
+                                            <label class="form-label">Organization Primary Contact Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="email" name="contact_email" class="form-control">
+                                            <label class="form-label">Organization Primary Contact Email</label>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <h3>Settlement Information</h3>
+                                <fieldset>
+
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <textarea name="org_primary_technical_area_focus" cols="30" rows="3" class="form-control no-resize"
+                                                      required></textarea>
+                                            <label class="form-label">Primary Technical Area Focus*</label>
+                                        </div>
+                                    </div>
+                                    <div class="settlement_section">
+                                        <div class="card settlement_card">
+                                            <div class="card-header text-center">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <h5>Settlement 1</h5>
+                                                    </div>
+                                                    <div class="col-2 text-right">
+                                                        <button type="button" class="btn-circle waves-effect waves-circle text-center" onclick="delete_user('{{ d.username }}');">
+                                                            <i class="material-icons col-red">delete</i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group form-float">
+                                                    <div class="body">
+                                                        <div class="row clearfix">
+                                                            <div class="col-md-6">
+                                                                <div class="form-line">
+                                                                    <select class="form-control show-tick" name="settlement_1">
+                                                                        <option value="" selected>-- SELECT SETTLEMENT
+                                                                            --
+                                                                        </option>
+                                                                        {% for o in settlements %}
+                                                                            <option value="{{ o.id }}">{{ o.value }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-line">
+                                                                    <input type="number" name="number_of_staff_1" class="form-control">
+                                                                    <label class="form-label">Number of staff</label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="row clearfix">
+                                                        <div class="col-md-6">
+                                                            <div class="form-line">
+                                                                <textarea name="operation_offices_1" cols="30" rows="3" class="form-control no-resize"></textarea>
+                                                                <label class="form-label">Settlement operational
+                                                                    office(s)</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-line">
+                                                                <textarea name="zone_1" cols="30" rows="3" class="form-control no-resize"></textarea>
+                                                                <label class="form-label">Settlement zones and
+                                                                    blocks</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-float text-center">
+                                                    <div class="form-line">
+                                                        <div class="body">
+                                                            <select id="optgroup" class="" multiple="multiple" name="thematic_area_1" style="border: none; min-height: 200px">
+                                                                {#                                                        class="ms"#}
+                                                                <optgroup label="Primary Technical Area">
+                                                                    {% for s in thematic_area %}
+                                                                        <option value="{{ s.id }}">{{ s.value }}</option>
+                                                                    {% endfor %}
+                                                                </optgroup>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <a id="add_sttlmnt" style="color: white" onclick="add_new_settlement();" class="btn btn-primary text-center">Add
+                                            More Settlement Details
+                                        </a>
+                                    </div>
+
+
+                                    <br><br>
+                                </fieldset>
+                                <h3>Upload Logo - Finish</h3>
+                                <fieldset>
+                                    <div class="form-group form-float">
+                                        <div class="file-upload">
+                                            <button class="file-upload-btn" type="button"
+                                                    onclick="$('.file-upload-input').trigger( 'click' )">Add Image
+                                            </button>
+
+                                            <div class="image-upload-wrap" disabled="">
+                                                <input class="file-upload-input" type='file' onchange="readURL(this);" name="org_logo"
+                                                       accept="image/*"/>
+                                                <div class="drag-text">
+                                                    <h3>Drag and drop a file or select add Image</h3>
+                                                </div>
+                                            </div>
+                                            <div class="file-upload-content">
+                                                <img class="file-upload-image" src="#" alt="your image"/>
+                                                <div class="image-title-wrap">
+                                                    <button type="button" onclick="removeUpload()" class="remove-image">
+                                                        Remove <span class="image-title">Uploaded Image</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
+                                    <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Advanced Form Example With Validation -->
+        </div>
+    </section>
+
+    <script src="{% static 'assets/plugins/jquery-validation/jquery.validate.js' %}"></script>
+    <!-- Jquery Validation Plugin Css -->
+    <script src="{% static 'assets/plugins/jquery-steps/jquery.steps.js' %}"></script> <!-- JQuery Steps Plugin Js -->
+
+    <script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script><!-- Custom Js -->
+    <script src="{% static 'assets/js/pages/forms/form-wizard.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js' %}"></script>
+    <!-- Bootstrap Colorpicker Js -->
+    <script src="{% static 'assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js' %}"></script>
+    <!-- Input Mask Plugin Js -->
+
+
+    <script src="{% static 'assets/plugins/autosize/autosize.js' %}"></script>
+    <script src="{% static 'assets/plugins/momentjs/moment.js' %}"></script>
+    {#    <script src="{% static 'assets/js/pages/forms/basic-form-elements.js' %}"></script>#}
+    {#        <script src="{% static 'assets/js/pages/forms/advanced-form-elements.js' %}"></script>#}
+    <script src="{% static 'assets/js/image-upload.js' %}"></script>
+    <script src="{% static 'assets/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
+    <!-- Multi Select Plugin Js -->
+
+    <script>
+
+        //Multi-select
+        {#$('#optgroup').multiSelect({selectableOptgroup: true});#}
+        {#$('#optgroup2').multiSelect({selectableOptgroup: true});#}
+        {#$('#optgroup3').multiSelect({selectableOptgroup: true});#}
+    </script>
+
+    <style>
+        ul {
+            list-style: none !important;
+        }
+
+        .wizard .content .body ul {
+            list-style: none !important;
+        }
+
+        .wizard .content .body ul li {
+            display: block;
+        }
+
+
+    </style>
+    <script>
+        function add_new_settlement() {
+            var s_cnt = document.getElementsByClassName("settlement_card").length + 1;
+            var s_count = s_cnt.toString()
+            var new_card = `<div class="card settlement_card">
+                                            <div class="card-header text-center">
+                                                <h5>Settlement ${s_count}</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group form-float">
+                                                    <div class="body">
+                                                        <div class="row clearfix">
+                                                            <div class="col-md-6">
+                                                                <div class="form-line">
+                                                                    <select class="form-control show-tick" name="settlement_${s_count}">
+                                                                        <option value="" selected>-- SELECT SETTLEMENT
+                                                                            --
+                                                                        </option>
+                                                                        {% for o in settlements %}
+                                                                            <option value="{{ o.id }}">{{ o.value }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-line">
+                                                                    <input type="number" name="number_of_staff_${s_count}" class="form-control" placeholder = "Number of staff">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group form-float">
+                                                    <div class="row clearfix">
+                                                        <div class="col-md-6">
+                                                            <div class="form-line">
+                                                                <textarea name="operation_offices_${s_count}" cols="30" rows="3" class="form-control no-resize" placeholder = "Settlement operational office(s)"></textarea>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-line">
+                                                                <textarea name="zone_${s_count}" cols="30" rows="3" class="form-control no-resize" placeholder = "Settlement zones and blocks"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-float text-center">
+                                                    <div class="form-line">
+                                                        <div class="body">
+                                                            <select id="optgroup" class="" multiple="multiple" name="thematic_area_${s_count}" style="border: none; min-height: 200px">
+                                                                {#                                                        class="ms"#}
+                                                                <optgroup label="Primary Technical Area">
+                                                                    {% for s in thematic_area %}
+                                                                        <option value="{{ s.id }}">{{ s.value }}</option>
+                                                                    {% endfor %}
+                                                                </optgroup>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`
+            $('.settlement_section').append(new_card);
+        }
+    </script>
+{% endblock %}

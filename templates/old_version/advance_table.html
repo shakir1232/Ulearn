@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <title>U-Learn</title>
+
+    <!-- Favicons -->
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+    <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'lib/font-awesome/css/font-awesome.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/advanced-datatable/css/demo_page.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/advanced-datatable/css/demo_table.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'lib/advanced-datatable/css/DT_bootstrap.css' %}"/>
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style-responsive.css' %}" rel="stylesheet">
+
+    <!-- =======================================================
+      Template Name: Dashio
+      Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
+      Author: TemplateMag.com
+      License: https://templatemag.com/license/
+    ======================================================= -->
+</head>
+
+<body>
+<section id="container">
+    <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+    <!--header start-->
+    <header class="header black-bg">
+        <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div>
+        <!--logo start-->
+        <!--logo start-->
+        <a href="/" class="logo" style="margin: 5px"><img src="{% static 'img/save_logo.png' %}"
+                                                          style="max-width: 200px;"></a>
+        <!--logo end-->
+        <div class="top-menu">
+            <ul class="nav pull-right top-menu">
+                <li><a class="logout" href="/logout/">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <!--header end-->
+    <!-- **********************************************************************************************************************************************************
+        MAIN SIDEBAR MENU
+        *********************************************************************************************************************************************************** -->
+    <!--sidebar start-->
+    <aside>
+        <div id="sidebar" class="nav-collapse ">
+            <!-- sidebar menu start-->
+            <ul class="sidebar-menu" id="nav-accordion">
+                <p class="centered"><a href="#"><img src="{% static 'img/usr.png' %}" class="img-circle"
+                                                                width="80"></a>
+                </p>
+                <h5 class="centered">Admin Portal</h5>
+                <li class="mt ">
+                    <a href="\">
+                        <i class="fa fa-th"></i>
+                        <span>Import Data</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="\clean-data\">
+                        <i class="fa fa-th"></i>
+                        <span>Ready Data</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="\raw-data\" class="active">
+                        <i class="fa fa-th"></i>
+                        <span>Raw Data</span>
+                    </a>
+                </li>
+            </ul>
+            <!-- sidebar menu end-->
+        </div>
+    </aside>
+    <!--sidebar end-->
+    <!-- **********************************************************************************************************************************************************
+        MAIN CONTENT
+        *********************************************************************************************************************************************************** -->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <h3><i class="fa fa-angle-right"></i> Raw Data</h3>
+            <div class="row mb">
+                <!-- page start-->
+                <div class="content-panel">
+                    <div class="adv-table" style="overflow-x: scroll; max-width: 100%; margin-left: 10px">
+                        <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered"
+                               id="hidden-table-info">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>org_name</th>
+                                <th>org_acronym</th>
+                                <th>founding_year</th>
+                                <th>years_active</th>
+                                <th>org_type</th>
+                                <th>org_legaltype</th>
+                                <th>refugee_settlement</th>
+                                <th>refugee_zone</th>
+                                <th>org_offices</th>
+                                <th>org_primarytechnicalarea</th>
+                                <th>org_activities</th>
+                                <th>org_secondarytechnicalarea1</th>
+                                <th>org_secondarytechnicalarea2</th>
+                                <th>org_targetgroup</th>
+                                <th>org_targetdemographic</th>
+                                <th>org_primarycontact</th>
+                                <th>org_email</th>
+                                <th>org_phone</th>
+                                <th>org_website</th>
+                                <th>org_facebook</th>
+                                <th>org_twitter</th>
+                                <th>org_logo</th>
+                                <th>contact_name</th>
+                                <th>contact_role</th>
+                                <th>contact_email</th>
+                                <th>contact_phone</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in data %}
+                                <tr class="">
+                                <td>{{ d.id }}</td>
+                                <td>{{ d.org_name }}</td>
+                                <td>{{ d.org_acronym }}</td>
+                                <td>{{ d.founding_year }}</td>
+                                <td>{{ d.years_active }}</td>
+                                <td>{{ d.org_type }}</td>
+                                <td>{{ d.org_legaltype }}</td>
+                                <td>{{ d.refugee_settlement }}</td>
+                                <td>{{ d.refugee_zone }}</td>
+                                <td>{{ d.org_offices }}</td>
+                                <td>{{ d.org_primarytechnicalarea }}</td>
+                                <td>{{ d.org_activities }}</td>
+                                <td>{{ d.org_secondarytechnicalarea1 }}</td>
+                                <td>{{ d.org_secondarytechnicalarea2 }}</td>
+                                <td>{{ d.org_targetgroup }}</td>
+                                <td>{{ d.org_targetdemographic }}</td>
+                                <td>{{ d.org_primarycontact }}</td>
+                                <td>{{ d.org_email }}</td>
+                                <td>{{ d.org_phone }}</td>
+                                <td>{{ d.org_website }}</td>
+                                <td>{{ d.org_facebook }}</td>
+                                <td>{{ d.org_twitter }}</td>
+                                <td>{{ d.org_logo }}</td>
+                                <td>{{ d.contact_name }}</td>
+                                <td>{{ d.contact_role }}</td>
+                                <td>{{ d.contact_email }}</td>
+                                <td>{{ d.contact_phone }}</td>
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- page end-->
+            </div>
+            <!-- /row -->
+        </section>
+        <!-- /wrapper -->
+    </section>
+    <!-- /MAIN CONTENT -->
+    <!--main content end-->
+    <!--footer start-->
+    <footer class="site-footer">
+        <div class="text-center">
+            <p><br><br>
+                <strong>             </strong>
+            </p>
+            <div class="credits">
+                <!--
+                  You are NOT allowed to delete the credit link to TemplateMag with free version.
+                  You can delete the credit link only if you bought the pro version.
+                  Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/
+                  Licensing information: https://templatemag.com/license/
+                -->
+                                                   <a href="#"></a>
+            </div>
+            <a href="#" class="go-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+    </footer>
+    <!--footer end-->
+</section>
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+<script type="text/javascript" language="javascript" src="{% static 'lib/advanced-datatable/js/jquery.js' %}"></script>
+<script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+<script class="include" type="text/javascript" src="{% static 'lib/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="{% static 'lib/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'lib/jquery.nicescroll.js' %}" type="text/javascript"></script>
+<script type="text/javascript" language="javascript"
+        src="{% static 'lib/advanced-datatable/js/jquery.dataTables.js' %}"></script>
+<script type="text/javascript" src="{% static 'lib/advanced-datatable/js/DT_bootstrap.js' %}"></script>
+<!--common script for all pages-->
+<script src="{% static 'lib/common-scripts.js' %}"></script>
+<!--script for this page-->
+<script type="text/javascript">
+    /* Formating function for row details */
+    function fnFormatDetails(oTable, nTr) {
+        var aData = oTable.fnGetData(nTr);
+        var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+        sOut += '<tr><td>Rendering engine:</td><td>' + aData[1] + ' ' + aData[4] + '</td></tr>';
+        sOut += '<tr><td>Link to source:</td><td>Could provide a link here</td></tr>';
+        sOut += '<tr><td>Extra info:</td><td>And any further details here (images etc)</td></tr>';
+        sOut += '</table>';
+
+        return sOut;
+    }
+
+    $(document).ready(function () {
+        /*
+         * Insert a 'details' column to the table
+         */
+        var nCloneTh = document.createElement('th');
+        var nCloneTd = document.createElement('td');
+        nCloneTd.innerHTML = '<img src="{% static 'lib/advanced-datatable/images/details_open.png' %}">';
+        nCloneTd.className = "center";
+
+        /*
+        $('#hidden-table-info thead tr').each(function () {
+            this.insertBefore(nCloneTh, this.childNodes[0]);
+        });
+
+        $('#hidden-table-info tbody tr').each(function () {
+            this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+        });
+*/
+        /*
+         * Initialse DataTables, with no sorting on the 'details' column
+         */
+        var oTable = $('#hidden-table-info').dataTable({
+            "aoColumnDefs": [{
+                "bSortable": false,
+                "aTargets": [0]
+            }],
+            "aaSorting": [
+                [1, 'asc']
+            ]
+        });
+
+        /* Add event listener for opening and closing details
+         * Note that the indicator for showing which row is open is not controlled by DataTables,
+         * rather it is done here
+         */
+        /*
+        $('#hidden-table-info tbody td img').live('click', function () {
+            var nTr = $(this).parents('tr')[0];
+            if (oTable.fnIsOpen(nTr)) {
+                {#/* This row is already open - close it */#}
+                this.src = "lib/advanced-datatable/media/images/details_open.png";
+                oTable.fnClose(nTr);
+            } else {
+                {#/* Open this row */#}
+                this.src = "lib/advanced-datatable/images/details_close.png";
+                oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+            }
+        });
+        */
+    });
+</script>
+</body>
+
+</html>

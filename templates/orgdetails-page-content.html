@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+
+    {#    <link rel="stylesheet" href="{% static 'assets/plugins/summernote/summernote.css' %}"/>#}
+    {#    <script src="{% static 'assets/plugins/summernote/summernote.js' %}"></script>#}
+    <link href="{% static 'assets/css/image-upload.css' %}" rel="stylesheet"/>
+<style>
+.file-upload-input {
+    width: 80% !important;
+}
+</style>
+    <section class="content">
+        <div class="block-header">
+        </div>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Organization Details Page Content</h2>
+                        </div>
+                        <div class="body">
+                            <h2 class="card-inside-title">Banner Image</h2>
+                            <div class="form-group form-float">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        {% if data.banner_image %}
+                                            <img class="" style="display: block !important; max-width: 80%; margin:auto; height: auto" src="{{ data.banner_image.url }}" alt="your image"/>
+                                        {% else %}
+                                            <p class="text-center">No image uploaded</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-12">
+                                        <form method="post" action="/org-details-page-content/" enctype="multipart/form-data">{% csrf_token %}
+                                            <div class="file-upload" style="width: 80%; text-align: center">
+                                                <button class="file-upload-btn" type="button"
+                                                        onclick="$('.file-upload-input').trigger( 'click' )">Change
+                                                    Image
+                                                </button>
+
+                                                <div class="image-upload-wrap">
+                                                    <input class="file-upload-input" type='file' name="banner_image"
+                                                           onchange="readURL(this);"
+                                                           accept="image/*"
+                                                           required
+                                                    />
+                                                    <div class="drag-text">
+                                                        <h3>Drag and drop a file or select Change Image</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="file-upload-content">
+                                                    <img class="file-upload-image" src="#" alt="your image" />
+
+                                                    <div class="image-title-wrap">
+                                                        <button type="button" onclick="removeUpload()" class="remove-image">
+                                                            Remove <span class="image-title">Uploaded Image</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <input type="submit" class="btn btn-raised bg-blue btn-block btn-lg waves-effect mt-3" style="max-width: 200px; margin:auto" value="SUBMIT">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'assets/js/image-upload.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,254 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <style>
+        svg text {
+            font-weight: 400 !important;
+        }
+    </style>
+    <!-- Main Content -->
+    <section class="content home">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card info-box-2 l-pink">
+                        <div class="body">
+                            <div class="icon col-12">
+                                <!--                      <i class="material-icons pt-2" style="line-height: 0 !important;">search</i>-->
+                                <!--                    <div class="chart chart-pie">30, 35, 25, 8</div>-->
+                            </div>
+                            <div class="content col-12">
+                                <div class="number">{{ settlement_count }}</div>
+                                <div class="text font-weight-bold">Settlements</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card info-box-2 l-parpl">
+                        <div class="body">
+                            <div class="icon col-12 m-t-10 m-b-5">
+                                {#                    <div class="chart chart-bar">6,4,8,6,8,10,5,6,7,9,5</div>#}
+                            </div>
+                            <div class="content col-12">
+                                <div class="number">{{ org_count }}</div>
+                                <div class="text font-weight-bold">Organizations</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card info-box-2 l-turquoise">
+                        <div class="body">
+                            <div class="icon col-12 m-t-5">
+                                <!--                    <span class="chart chart-line">9,4,6,5,6,4,7,3</span>-->
+                            </div>
+                            <div class="content col-12">
+                                <!--                      <input type="text" class="knob dial2" value="0" data-width="90" data-height="90" data-thickness="0.2" data-fgColor="#ffff" readonly>-->
+                                <!--                        <h6 class="m-t-20">Orders Panding</h6>-->
+                                <div class="number">{{ td_count }}</div>
+                                <div class="text font-weight-bold">Target Demographics</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card info-box-2 l-amber">
+                        <div class="body">
+                            <div class="icon col-12 m-t-10 m-b-5">
+                                <!--                    <div class="chart chart-bar">4,6,-3,-1,2,-2,4,3,6,7,-2,3</div>-->
+                            </div>
+                            <div class="content col-12">
+                                <div class="number">{{ org_type_count }}</div>
+                                <div class="text font-weight-bold">Organization Types</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card" style="min-height: 100% !important;">
+                        <div class="header">
+                            <h2>Settlement Overview</h2>
+                        </div>
+                        <div class="body">
+                            <div id="pie_chart" class="flot-chart" style="padding: 0px; position: relative;">
+
+                            </div>
+                            <div class="body table-responsive members_profiles">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <!--                                    <th style="width:60px;">Member</th>-->
+                                        <th>#</th>
+                                        <th>Settlement</th>
+                                        <th class="text-center">Number of Organization</th>
+                                        <th></th>
+                                        <!--                                    <th>Progress</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for s in settlements %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ s.settlement__value }}</td>
+                                            <td class="text-center">{{ s.count_org }}</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar l-green" role="progressbar"
+                                                         aria-valuenow="100"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 100%;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="card" style="min-height: 100% !important;">
+                        <div class="header">
+                            <h2>Organization Categories</h2>
+
+                        </div>
+                        <div class="body">
+                            <div style="min-height: 320px !important;">
+                                <div id="donut_chart" class="dashboard-donut-chart">
+                                </div>
+
+
+                            </div>
+                            <table class="table m-t-15 m-b-0">
+                                <thead>
+                                <tr>
+                                    <!--
+                                                                      <th style="width:60px;">Member</th>-->
+                                    <th>#</th>
+                                    <th>Organization Type</th>
+                                    <th class="text-center">Number of Organization</th>
+                                    <th></th>
+                                    <!--                                    <th>Progress</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for t in org_types %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ t.org_type__value }}</td>
+                                        <td class="text-center">{{ t.count }}</td>
+                                        <td><i class="zmdi zmdi-caret-up text-success"></i></td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        $(function () {
+            //PIE CHART ==========================================================================================
+            var pieChartData = [];
+            var pieChartColors = ['#f8a427', '#ef5c64', '#2d9fd1', '#60c7aa', '#9980FA', '#833471', '#A3CB38', '#FDA7DF', '#5758BB', '#FD7272', '#58B19F', '#BDC581', '#778ca3', '#4b7bec', '#fad390', '#b71540'];
+            var pieChartDatas = [];
+            var pieChartLabels = [];
+
+            {% for s in settlements %}
+                pieChartDatas.push({{ s.count }})
+                pieChartLabels.push("{{ s.settlement__value }}")
+            {% endfor %}
+            var pieChartSeries = {{ settlements|length }};
+
+            for (var i = 0; i < pieChartSeries; i++) {
+                pieChartData[i] = {
+                    label: pieChartLabels[i],
+                    data: pieChartDatas[i],
+                    color: pieChartColors[i]
+                }
+            }
+            $.plot('#pie_chart', pieChartData, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 3 / 4,
+                            formatter: labelFormatter,
+                            background: {
+                                opacity: 0.5
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            function labelFormatter(label, series) {
+                return '<div style="font-size:8pt; text-align:center; padding:2px; color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+            }
+
+            //====================================================================================================
+        });
+
+        //=======
+        function initDonutChart() {
+            Morris.Donut({
+                element: 'donut_chart',
+                data: [
+                    {% for t in org_types %}
+                        {
+                            {% if t.org_type__value|length > 20 %}
+                                label: "{{ t.org_type__value|truncatechars:20 }}",
+                            {% else %}
+                                label: "{{ t.org_type__value }}",
+                            {% endif %}
+
+                            value: {{ t.count }}
+                        },
+                    {% endfor %}
+                    /*{
+                    label: 'Firefox',
+                    value: 30
+                }, {
+                    label: 'Safari',
+                    value: 18
+                }, {
+                    label: 'Opera',
+                    value: 12
+                },
+                {
+                    label: 'Other',
+                    value: 3
+                }*/
+                ],
+                colors: ['#00adef', '#ffba3a', '#00d4bb', '#f58787', '#708090'],
+                formatter: function (y) {
+                    return y //+ '%'
+                }
+            });
+        }
+
+        initDonutChart();
+        //=======
+    </script>
+
+{% endblock %}

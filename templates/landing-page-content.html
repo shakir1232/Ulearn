@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    {#    <link rel="stylesheet" href="{% static 'assets/plugins/summernote/summernote.css' %}"/>#}
+    {#    <script src="{% static 'assets/plugins/summernote/summernote.js' %}"></script>#}
+    <link href="{% static 'assets/css/image-upload.css' %}" rel="stylesheet"/>
+
+    <section class="content">
+        <div class="block-header">
+        </div>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Landing Page Content</h2>
+                        </div>
+                        <div class="body">
+                            <form method="post" action="/landing-page-content/" enctype="multipart/form-data">{% csrf_token %}
+                                <h2 class="card-inside-title">Title 1</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.title1 %}
+                                                    <input class="form-control no-resize" name="title1"
+                                                           value="{{ data.title1 }}"
+                                                           id="t1"
+                                                           placeholder="Please enter title for the top of the page">
+                                                {% else %}
+                                                    <input class="form-control no-resize" name="title1"
+                                                           id="t1"
+                                                           placeholder="Please enter title for the top of the page">
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 class="card-inside-title">Description 1</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.description1 %}
+                                                    <textarea rows="4" class="form-control no-resize"
+                                                              name="description1"
+                                                              placeholder="Please type description for the top of the page...">{{ data.description1 }}</textarea>
+
+                                                {% else %}
+                                                    <textarea rows="4" class="form-control no-resize"
+                                                              name="description1"
+                                                              placeholder="Please type description for the top of the page..."></textarea>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 class="card-inside-title">Additional URL for description</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.description1_url %}
+                                                    <input class="form-control no-resize" name="description1_url"
+                                                           value="{{ data.description1_url }}"
+                                                           placeholder="Please enter URL if any.."/>
+                                                {% else %}
+                                                    <input class="form-control no-resize" name="description1_url"
+                                                           placeholder="Please enter URL if any.."/>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h2 class="card-inside-title">Map Description</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.map_description %}
+                                                    <textarea rows="4" class="form-control no-resize"
+                                                              name="map_description"
+                                                              placeholder="Please type map description...">{{ data.map_description }}</textarea>
+                                                {% else %}
+                                                    <textarea rows="4" class="form-control no-resize"
+                                                              name="map_description"
+                                                              placeholder="Please type map description..."></textarea>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <h2 class="card-inside-title">Title 2</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.title2 %}
+                                                    <input class="form-control no-resize" name="title2"
+                                                           value="{{ data.title2 }}"
+                                                           placeholder="Please enter title for the middle of the page.."/>
+                                                {% else %}
+                                                    <input class="form-control no-resize" name="title2"
+                                                           placeholder="Please enter title for the middle of the page.."/>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h2 class="card-inside-title">Description 2</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.description2 %}
+                                                    <textarea rows="4" class="form-control no-resize"
+                                                              name="description2"
+                                                              placeholder="Please type description for the middle of the page...">{{ data.description2 }}</textarea>
+                                                {% else %}
+                                                    <textarea rows="4" class="form-control no-resize"
+                                                              name="description2"
+                                                              placeholder="Please type description for the middle of the page..."></textarea>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h2 class="card-inside-title">Access form URL</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.access_form_url %}
+                                                    <input class="form-control no-resize" name="access_form_url"
+                                                           value="{{ data.access_form_url }}"
+                                                           placeholder="Please enter access for url.."/>
+                                                {% else %}
+                                                    <input class="form-control no-resize" name="access_form_url"
+                                                           placeholder="Please enter access for url.."/>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h2 class="card-inside-title">Disclaimer</h2>
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                {% if data.disclaimer %}
+                                                    <input class="form-control no-resize" name="disclaimer"
+                                                           value="{{ data.disclaimer }}"
+                                                           placeholder="Please enter disclaimer for the bottom of the page.."/>
+                                                {% else %}
+                                                    <input class="form-control no-resize" name="disclaimer"
+                                                           placeholder="Please enter disclaimer for the bottom of the page.."/>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h2 class="card-inside-title">Banner Image</h2>
+                                <div class="form-group form-float">
+                                    <div class="form-group form-float">
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                {% if data.banner_image %}
+                                                    <img class="" style="display: block !important; max-width: 80%; margin:auto; height: auto" src="{{ data.banner_image.url }}" alt="your image"/>
+                                                {% else %}
+                                                    <p class="text-center">No image uploaded</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="file-upload" style="width: 80%; text-align: center">
+                                                    <button class="file-upload-btn" type="button"
+                                                            onclick="$('.file-upload-input').trigger( 'click' )">Change
+                                                        Image
+                                                    </button>
+
+                                                    <div class="image-upload-wrap">
+                                                        <input class="file-upload-input" type='file' name="banner_image"
+                                                               onchange="readURL(this);"
+                                                               accept="image/*"
+                                                        />
+                                                        <div class="drag-text">
+                                                            <h3>Drag and drop a file or select Change Image</h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="file-upload-content">
+                                                        <img class="file-upload-image" src="#" alt="your image"/>
+
+                                                        <div class="image-title-wrap">
+                                                            <button type="button" onclick="removeUpload()" class="remove-image">
+                                                                Remove <span class="image-title">Uploaded Image</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-raised bg-pink btn-block btn-lg waves-effect mt-3" style="border-radius:22px;max-width: 200px; margin:auto">SUBMIT CHANGES</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {#    <script src="{% static 'assets/js/image-upload.js' %}"></script>#}
+{% endblock %}
